@@ -1,5 +1,6 @@
 # parrallel_BO
 mnist和cifar10目录下分别表示在这两种数据集下的实验代码，里面大致是相同的，mnist用了LeNet，cifar10用例如ResNet18
+
 以mnist目录下为例
 test.py是串行BO，参数空间space里可以增减参数数目，修改参数范围，然后跑出来的数据存在同目录下的trials文件中
 test_sub.py是并行BO，采用multiprocessing来多进程并行，代码里进程数是10个，然后参数空间就把learning rate（lr）分成10份，跑出来的数据存在同目录下的trials0-trials9文件
