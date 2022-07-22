@@ -1,1 +1,11 @@
 # parrallel_BO
+mnist和cifar10目录下分别表示在这两种数据集下的实验代码，里面大致是相同的，mnist用了LeNet，cifar10用例如ResNet18
+以mnist目录下为例
+test.py是串行BO，参数空间space里可以增减参数数目，修改参数范围，然后跑出来的数据存在同目录下的trials文件中
+test_sub.py是并行BO，采用multiprocessing来多进程并行，代码里进程数是10个，然后参数空间就把learning rate（lr）分成10份，跑出来的数据存在同目录下的trials0-trials9文件
+为了淘汰那些比较差的参数空间，在find_best函数中记录了各个进程得到的最优解，记录在队列para_best中，并在各个进程都跑完一组后排序
+淘汰时就把队尾的空间舍弃，队首的空间再分出一份给队尾的那个进程，然后因为队首的空间被分成两份了，所以之前在这个参数空间里跑出来的数据也要根据所在的位置分一下
+test_sub_half.py和上一个相比是每次淘汰一半的空间，也就是把分数据那块改了一下
+test_sub_nosh.py和test_sub.py相比是没有信息的共享，具体体现在被淘汰的那个子空间无法得知当前最优的子空间跑出来的数据，也就是不用分给它了
+test_mango.py是用mango来调优超参数，early_stop函数是让acc超过设定的值就终止
+各个代码运行的话直接python xxx.py就行了
