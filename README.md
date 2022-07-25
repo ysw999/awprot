@@ -21,6 +21,6 @@ test_mango.py是用mango来调优超参数，early_stop函数是让acc超过设�
 
 cifar100目录下的main.py是在cifar100数据集下的实验代码，依次进行串行BO和并行BO，然后models目录下有几个可以选择使用的模型
 
-parallel_BO.py是在非凸函数上依次进行串行BO和并行BO，可以根据需要替换里面的函数f以及下面的参数空间space
+最外面的parallel_BO.py是在非凸函数上依次进行串行BO和并行BO，可以根据需要替换里面的函数f以及下面的参数空间space
 
 各个代码运行的话直接python xxx.py就行了
