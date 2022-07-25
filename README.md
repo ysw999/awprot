@@ -1,4 +1,4 @@
-# parrallel_BO
+# parallel_BO
 mnist和cifar10目录下分别表示在这两种数据集下的实验代码，里面大致是相同的，mnist用了LeNet，cifar10用了ResNet18
 
 以mnist目录下为例
@@ -16,5 +16,7 @@ test_sub_half.py和上一个相比是每次淘汰一半的空间，也就是把�
 test_sub_nosh.py和test_sub.py相比是没有信息的共享，具体体现在被淘汰的那个子空间无法得知当前最优的子空间跑出来的数据，也就是不用分给它了
 
 test_mango.py是用mango来调优超参数，early_stop函数是让acc超过设定的值就终止
+
+parallel_BO.py是在非凸函数上依次进行串行BO和并行BO，可以根据需要替换里面的函数f以及下面的参数空间space
 
 各个代码运行的话直接python xxx.py就行了
