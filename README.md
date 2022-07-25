@@ -15,6 +15,8 @@ test_sub_half.py和上一个相比是每次淘汰一半的空间，也就是把�
 
 test_sub_nosh.py和test_sub.py相比是没有信息的共享，具体体现在被淘汰的那个子空间无法得知当前最优的子空间跑出来的数据，也就是不用分给它了
 
+test_sub_nosh_nodel.py是再上一个的基础上去掉了较差子空间的淘汰，每个进程都各自在最开始划定的参数空间中寻找最优解
+
 test_mango.py是用mango来调优超参数，early_stop函数是让acc超过设定的值就终止
 
 cifar100目录下的main.py是在cifar100数据集下的实验代码，依次进行串行BO和并行BO，然后models目录下有几个可以选择使用的模型
