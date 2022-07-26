@@ -8,6 +8,7 @@ from torch.utils.data import DataLoader
 from torchvision.transforms import ToTensor
 from mango import Tuner, scheduler
 from mango.domain.distribution import loguniform
+from scipy.stats import uniform
 import time
 
 class Model(Module):
@@ -77,19 +78,24 @@ def main(lr, batch, epoch):
     return acc
 
 @scheduler.parallel(n_jobs=10)
-def target(lr):
-    acc = main(lr, 256, 20)
+def target(hy_lr, hy_batch, hy_epoch):
+    int_batch = int(hy_batch*10000)
+    int_epoch = int(hy_epoch*10000)
+    acc = main(hy_lr, int_batch, int_epoch)
     return acc * -1.0
 
 def early_stop(results):
     acc = results['best_objective']
-    return acc < -0.988
+    return acc < -0.99
 
-param_space = dict(lr=loguniform(-4, 4))
-s = time.time()
-tuner = Tuner(param_space, target, {'num_iteration': 500, 'early_stopping': early_stop})
-results = tuner.minimize()
-e = time.time()
-print('time: ', e - s)
-print('para: ', results['best_params'])
-print('acc: ', results['best_objective'])
+if __name__ == '__main__':
+    param_space = dict(hy_lr=loguniform(-5, 5), hy_batch=uniform(0.0016, 0.0240), hy_epoch=uniform(0.0015, 0.0035))
+    s = time.time()
+    tuner = Tuner(param_space, target, {'num_iteration': 500, 'early_stopping': early_stop})
+    results = tuner.minimize()
+    e = time.time()
+    print('time: ', e - s)
+    print('para: ', results['best_params'])
+    print('acc: ', results['best_objective'])
+    print('data: ', results['params_tried'])
+    print('values: ', results['objective_values'])
