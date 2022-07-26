@@ -1,4 +1,3 @@
-# parallel_BO
 mnist和cifar10目录下分别表示在这两种数据集下的实验代码，里面大致是相同的，mnist用了LeNet，cifar10用了ResNet18
 
 以mnist目录下为例
