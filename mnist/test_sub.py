@@ -80,12 +80,12 @@ def main(lr, batch, epoch):
 
 def target(args):
     hy_lr = args['hy_lr']
-    #hy_batch = args['hy_batch']
-    #hy_epoch = args['hy_epoch']
-    #int_batch = int(hy_batch*10000)
-    #int_epoch = int(hy_epoch*10000)
-    #acc = main(hy_lr, int_batch, int_epoch)
-    acc = main(hy_lr, 256, 20)
+    hy_batch = args['hy_batch']
+    hy_epoch = args['hy_epoch']
+    int_batch = int(hy_batch*10000)
+    int_epoch = int(hy_epoch*10000)
+    acc = main(hy_lr, int_batch, int_epoch)
+    #acc = main(hy_lr, 256, 20)
     return acc * -1.0
 
 def find_best(i, space, evals, para_best):
@@ -109,8 +109,8 @@ if __name__ == '__main__':
 
     a = [([0] * 2) for i in range(10)]
     b = [0] * 10
-    start = 0.00001
-    end = 0.9
+    start = np.log(0.00001)
+    end = np.log(1)
     interval = (end - start) / 10
     for i in range(10):
         a[i][0] = start + interval * i
@@ -118,9 +118,9 @@ if __name__ == '__main__':
     space = []
     for i in range(10):
         space.append({
-            'hy_lr' : hp.uniform('hy_lr', a[i][0], a[i][1]),
-            #'hy_batch' : hp.uniform('hy_batch', 0.0016,0.0256),
-            #'hy_epoch' : hp.uniform('hy_epoch', 0.0050, 0.0120),
+            'hy_lr' : hp.loguniform('hy_lr', a[i][0], a[i][1]),
+            'hy_batch' : hp.uniform('hy_batch', 0.0016, 0.0256),
+            'hy_epoch' : hp.uniform('hy_epoch', 0.0015, 0.0050),
         })
 
     trials = Trials()
@@ -192,7 +192,7 @@ if __name__ == '__main__':
                 b[L[-1][0]] += 1
         pickler.dump(trials1, open('trials' + str(L[0][0]), 'wb'))
         pickler.dump(trials2, open('trials' + str(L[-1][0]), 'wb'))
-        if L[0][2] <= -0.988:
+        if L[0][2] <= -0.99:
             break
     e = time.time()
     print('time: ', e - s)
